@@ -8,6 +8,7 @@ import { TagsBlock } from "../components/TagsBlock";
 import { CommentsBlock } from "../components/CommentsBlock";
 
 export const Home = () => {
+  React.useEffect(() => {}, []); //back-end request to get articles
   return (
     <>
       <Tabs
