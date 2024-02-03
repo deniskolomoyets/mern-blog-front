@@ -1,8 +1,8 @@
-import React from 'react';
-import Button from '@mui/material/Button';
+import React from "react";
+import Button from "@mui/material/Button";
 
-import styles from './Header.module.scss';
-import Container from '@mui/material/Container';
+import styles from "./Header.module.scss";
+import Container from "@mui/material/Container";
 
 export const Header = () => {
   const isAuth = false;
@@ -14,25 +14,29 @@ export const Header = () => {
       <Container maxWidth="lg">
         <div className={styles.inner}>
           <a className={styles.logo} href="/">
-            <div>ARCHAKOV BLOG</div>
+            <div>MERN BLOG</div>
           </a>
           <div className={styles.buttons}>
             {isAuth ? (
               <>
                 <a href="/posts/create">
-                  <Button variant="contained">Написать статью</Button>
+                  <Button variant="contained">Write an article</Button>
                 </a>
-                <Button onClick={onClickLogout} variant="contained" color="error">
-                  Выйти
+                <Button
+                  onClick={onClickLogout}
+                  variant="contained"
+                  color="error"
+                >
+                  Exit
                 </Button>
               </>
             ) : (
               <>
                 <a href="/login">
-                  <Button variant="outlined">Войти</Button>
+                  <Button variant="outlined">Enter</Button>
                 </a>
                 <a href="/register">
-                  <Button variant="contained">Создать аккаунт</Button>
+                  <Button variant="contained">Create account</Button>
                 </a>
               </>
             )}
