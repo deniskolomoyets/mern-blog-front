@@ -16,7 +16,7 @@ export const FullPost = () => {
             "https://res.cloudinary.com/practicaldev/image/fetch/s--uigxYVRB--/c_fill,f_auto,fl_progressive,h_50,q_auto,w_50/https://dev-to-uploads.s3.amazonaws.com/uploads/user/profile_image/187971/a5359a24-b652-46be-8898-2c5df32aa6e0.png",
           fullName: "Keff",
         }}
-        createdAt={"12 июня 2022 г."}
+        createdAt={"12 june 2023 г."}
         viewsCount={150}
         commentsCount={3}
         tags={["react", "fun", "typescript"]}
@@ -34,14 +34,14 @@ export const FullPost = () => {
         items={[
           {
             user: {
-              fullName: "Вася Пупкин",
+              fullName: "Michel Dodo",
               avatarUrl: "https://mui.com/static/images/avatar/1.jpg",
             },
-            text: "Это тестовый комментарий 555555",
+            text: "This is text commit",
           },
           {
             user: {
-              fullName: "Иван Иванов",
+              fullName: "Donald Wasser",
               avatarUrl: "https://mui.com/static/images/avatar/2.jpg",
             },
             text: "When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top",
