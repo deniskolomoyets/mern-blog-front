@@ -11,7 +11,7 @@ import { fetchPosts, fetchTags } from "../redux/slices/posts";
 
 export const Home = () => {
   const dispatch = useDispatch(); //to send an asynchronous action(fetchPosts - in posts.js)
-  const { posts, tags } = useSelector((state) => state.posts);
+  const { posts, tags } = useSelector((state) => state.posts); //from state that in redux=> store.js I take posts
 
   const isPostsLoading = posts.status === "loading";
   const isTagsLoading = tags.status === "loading";
