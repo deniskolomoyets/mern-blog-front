@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../axios";
 
-export const fetchUserData = createAsyncThunk(
+export const fetchAuth = createAsyncThunk(
   "/auth/fetchUserData",
   async (params) => {
     const { data } = await axios.post("/auth/login", params);
@@ -18,15 +18,15 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   extraReducers: {
-    [fetchUserData.pending]: (state) => {
+    [fetchAuth.pending]: (state) => {
       state.status = "loading";
       state.data = null; //loading
     },
-    [fetchUserData.fulfilled]: (state, action) => {
+    [fetchAuth.fulfilled]: (state, action) => {
       state.status = "loaded";
       state.data = action.payload; //request succeeded
     },
-    [fetchUserData.rejected]: (state) => {
+    [fetchAuth.rejected]: (state) => {
       state.status = "error";
       state.data = null;
     },
