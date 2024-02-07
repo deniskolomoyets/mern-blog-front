@@ -33,4 +33,6 @@ const authSlice = createSlice({
   },
 });
 
+export const selectIsAuth = (state) => Boolean(state.auth.data); //get state and checks if I have data in auth
+
 export const authReducer = authSlice.reducer;
