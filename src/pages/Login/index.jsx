@@ -26,8 +26,15 @@ export const Login = () => {
     mode: "onChange",
   });
 
-  const onSumbit = (values) => {
-    dispatch(fetchAuth(values));
+  const onSumbit = async (values) => {
+    const data = await dispatch(fetchAuth(values));
+    if (!data.payload) {
+      return alert("Failed to log in");
+    }
+
+    if ("token" in data.payload) {
+      window.localStorage.setItem("token", data.payload.token);
+    }
   }; //waits for an object with email and password, and passes it to the back-end.
 
   if (isAuth) {
