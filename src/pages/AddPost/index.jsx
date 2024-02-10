@@ -9,17 +9,36 @@ import styles from "./AddPost.module.scss";
 import { useSelector } from "react-redux";
 import { selectIsAuth } from "../../redux/slices/auth";
 import { Navigate } from "react-router-dom";
+import axios from "../../axios";
 
 export const AddPost = () => {
   const isAuth = useSelector(selectIsAuth);
-  const imageUrl = "";
+  const [isLoading, setLoading] = React.useState(false);
+
   const [value, setValue] = React.useState(""); //value - save what I wrote in editor(simplemde)
   const [title, setTitle] = React.useState("");
   const [tags, setTags] = React.useState("");
+  const [imageUrl, setImageUrl] = React.useState("");
 
-  const handleChangeFile = () => {};
+  const inputFileRef = React.useRef(null);
 
-  const onClickRemoveImage = () => {};
+  const handleChangeFile = async (event) => {
+    try {
+      const formData = new FormData();
+      const file = event.target.files[0];
+      formData.append("image", file);
+      const { data } = await axios.post("/upload", formData);
+      setImageUrl(data.url);
+      console.log(data);
+    } catch (error) {
+      console.warn(error);
+      alert("Image loading error");
+    }
+  };
+
+  const onClickRemoveImage = () => {
+    setImageUrl("");
+  };
 
   const onChange = React.useCallback((value) => {
     setValue(value);
@@ -44,24 +63,36 @@ export const AddPost = () => {
     return <Navigate to="/" />;
   } //if you're not logged in, go to the home page
 
-  console.log({ title, tags, value });
   return (
     <Paper style={{ padding: 30 }}>
-      <Button variant="outlined" size="large">
+      <Button
+        onClick={() => inputFileRef.current.click()}
+        variant="outlined"
+        size="large"
+      >
         Download preview
       </Button>
-      <input type="file" onChange={handleChangeFile} hidden />
+      <input
+        ref={inputFileRef}
+        type="file"
+        onChange={handleChangeFile}
+        hidden
+      />
       {imageUrl && (
-        <Button variant="contained" color="error" onClick={onClickRemoveImage}>
-          Delete
-        </Button>
-      )}
-      {imageUrl && (
-        <img
-          className={styles.image}
-          src={`http://localhost:4444${imageUrl}`}
-          alt="Uploaded"
-        />
+        <>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={onClickRemoveImage}
+          >
+            Delete
+          </Button>
+          <img
+            className={styles.image}
+            src={`http://localhost:4444${imageUrl}`}
+            alt="Uploaded"
+          />
+        </>
       )}
       <br />
       <br />
