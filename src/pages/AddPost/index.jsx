@@ -8,14 +8,15 @@ import "easymde/dist/easymde.min.css";
 import styles from "./AddPost.module.scss";
 import { useSelector } from "react-redux";
 import { selectIsAuth } from "../../redux/slices/auth";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import axios from "../../axios";
 
 export const AddPost = () => {
+  const navigate = useNavigate();
   const isAuth = useSelector(selectIsAuth);
   const [isLoading, setLoading] = React.useState(false);
 
-  const [value, setValue] = React.useState(""); //value - save what I wrote in editor(simplemde)
+  const [text, setText] = React.useState(""); //text - save what I wrote in editor(simplemde)
   const [title, setTitle] = React.useState("");
   const [tags, setTags] = React.useState("");
   const [imageUrl, setImageUrl] = React.useState("");
@@ -41,8 +42,28 @@ export const AddPost = () => {
   };
 
   const onChange = React.useCallback((value) => {
-    setValue(value);
+    setText(value);
   }, []); //controlled editor. use useCallback because it's library feature
+
+  const onSubmit = async () => {
+    try {
+      setLoading(true);
+
+      const fields = {
+        title,
+        imageUrl,
+        tags: tags.split(","),
+        text,
+      };
+      const { data } = await axios.post("/posts", fields);
+
+      const id = data._id;
+
+      navigate(`/posts/${id}`);
+    } catch (error) {
+      console.warn("Article creation error");
+    }
+  };
 
   const options = React.useMemo(
     () => ({
@@ -114,12 +135,12 @@ export const AddPost = () => {
       />
       <SimpleMDE
         className={styles.editor}
-        value={value}
+        value={text}
         onChange={onChange}
         options={options}
       />
       <div className={styles.buttons}>
-        <Button size="large" variant="contained">
+        <Button onClick={onSubmit} size="large" variant="contained">
           Publish
         </Button>
         <a href="/">
