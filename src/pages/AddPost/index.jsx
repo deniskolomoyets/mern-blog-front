@@ -6,10 +6,16 @@ import SimpleMDE from "react-simplemde-editor";
 
 import "easymde/dist/easymde.min.css";
 import styles from "./AddPost.module.scss";
+import { useSelector } from "react-redux";
+import { selectIsAuth } from "../../redux/slices/auth";
+import { Navigate } from "react-router-dom";
 
 export const AddPost = () => {
+  const isAuth = useSelector(selectIsAuth);
   const imageUrl = "";
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = React.useState(""); //value - save what I wrote in editor(simplemde)
+  const [title, setTitle] = React.useState("");
+  const [tags, setTags] = React.useState("");
 
   const handleChangeFile = () => {};
 
@@ -17,7 +23,7 @@ export const AddPost = () => {
 
   const onChange = React.useCallback((value) => {
     setValue(value);
-  }, []);
+  }, []); //controlled editor. use useCallback because it's library feature
 
   const options = React.useMemo(
     () => ({
@@ -32,8 +38,13 @@ export const AddPost = () => {
       },
     }),
     []
-  );
+  ); //editor settings
 
+  if (!window.localStorage.getItem("token") && !isAuth) {
+    return <Navigate to="/" />;
+  } //if you're not logged in, go to the home page
+
+  console.log({ title, tags, value });
   return (
     <Paper style={{ padding: 30 }}>
       <Button variant="outlined" size="large">
@@ -58,9 +69,13 @@ export const AddPost = () => {
         classes={{ root: styles.title }}
         variant="standard"
         placeholder="Article headline..."
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
         fullWidth
       />
       <TextField
+        value={tags}
+        onChange={(e) => setTags(e.target.value)}
         classes={{ root: styles.tags }}
         variant="standard"
         placeholder="Tags"
