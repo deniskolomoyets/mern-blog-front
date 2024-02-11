@@ -61,7 +61,7 @@ const postsSlice = createSlice({
     //Delete articles
     [fetchRemovePost.pending]: (state, action) => {
       state.posts.items = state.posts.items.filter(
-        (obj) => obj.id !== action.meta.arg
+        (obj) => obj._id !== action.meta.arg
       ); //delete article from arr
     },
   }, // in extraReducer describe state asycn action
