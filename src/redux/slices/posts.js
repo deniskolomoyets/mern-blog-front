@@ -16,6 +16,20 @@ export const fetchRemovePost = createAsyncThunk(
   async (id) => axios.delete(`/posts/${id}`)
 );
 
+export const fetchSortByNewest = createAsyncThunk(
+  "posts/fetchSortByNewest",
+  async () => {
+    await axios.get(`/posts`);
+  }
+);
+
+export const fetchSortByPopularity = createAsyncThunk(
+  "posts/fetchSortByPopularity",
+  async () => {
+    await axios.get(`/posts`);
+  }
+);
+
 const initialState = {
   posts: {
     items: [],
@@ -63,6 +77,34 @@ const postsSlice = createSlice({
       state.posts.items = state.posts.items.filter(
         (obj) => obj._id !== action.meta.arg
       ); //delete article from arr
+    },
+    //new post sort
+    [fetchSortByNewest.pending]: (state) => {
+      state.posts.status = "loading";
+    },
+    [fetchSortByNewest.fulfilled]: (state) => {
+      state.posts.items = state.posts.items.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
+      state.posts.status = "loaded";
+    },
+    [fetchSortByNewest.rejected]: (state) => {
+      state.posts.items = [];
+      state.posts.status = "error";
+    },
+    //popularity post sort
+    [fetchSortByPopularity.pending]: (state) => {
+      state.posts.status = "loading";
+    },
+    [fetchSortByPopularity.fulfilled]: (state) => {
+      state.posts.items = state.posts.items.sort(
+        (a, b) => b.viewsCount - a.viewsCount
+      );
+      state.posts.status = "loaded";
+    },
+    [fetchSortByPopularity.rejected]: (state) => {
+      state.posts.items = [];
+      state.posts.status = "error";
     },
   }, // in extraReducer describe state asycn action
 });

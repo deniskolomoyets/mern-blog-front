@@ -7,7 +7,12 @@ import Grid from "@mui/material/Grid";
 import { Post } from "../components/Post";
 import { TagsBlock } from "../components/TagsBlock";
 import { CommentsBlock } from "../components/CommentsBlock";
-import { fetchPosts, fetchTags } from "../redux/slices/posts";
+import {
+  fetchPosts,
+  fetchTags,
+  fetchSortByNewest,
+  fetchSortByPopularity,
+} from "../redux/slices/posts";
 
 export const Home = () => {
   const dispatch = useDispatch(); //to send an asynchronous action(fetchPosts - in posts.js)
@@ -17,20 +22,42 @@ export const Home = () => {
   const isPostsLoading = posts.status === "loading";
   const isTagsLoading = tags.status === "loading";
 
+  const [filterState, setFilterState] = React.useState("new");
+
   React.useEffect(() => {
     dispatch(fetchPosts());
     dispatch(fetchTags());
   }, []); //back-end request to get articles
 
+  const onSortByNewest = () => {
+    dispatch(fetchSortByNewest());
+  };
+
+  const onSortByPopularity = () => {
+    dispatch(fetchSortByPopularity());
+  };
+
   return (
     <>
       <Tabs
         style={{ marginBottom: 15 }}
-        value={0}
+        value={filterState === "new" ? 0 : 1}
         aria-label="basic tabs example"
       >
-        <Tab label="New" />
-        <Tab label="Popular" />
+        <Tab
+          onClick={() => {
+            onSortByNewest();
+            setFilterState("new");
+          }}
+          label="New"
+        />
+        <Tab
+          onClick={() => {
+            onSortByPopularity();
+            setFilterState("popular");
+          }}
+          label="Popular"
+        />
       </Tabs>
       <Grid container spacing={4}>
         <Grid xs={8} item>
@@ -62,7 +89,7 @@ export const Home = () => {
                   fullName: "Michel Dodo",
                   avatarUrl: "https://mui.com/static/images/avatar/1.jpg",
                 },
-                text: "Это тестовый комментарий",
+                text: "This is comment",
               },
               {
                 user: {
