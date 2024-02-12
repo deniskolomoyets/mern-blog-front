@@ -37,6 +37,8 @@ export const Home = () => {
     dispatch(fetchSortByPopularity());
   };
 
+  //can do faster sorting by usingEffect
+
   return (
     <>
       <Tabs
