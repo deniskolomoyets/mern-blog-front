@@ -11,11 +11,10 @@ import CommentIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import styles from "./Post.module.scss";
 import { UserInfo } from "../UserInfo";
 import { PostSkeleton } from "./Skeleton";
-import { useDispatch } from "react-redux";
-import { fetchRemovePost } from "../../redux/slices/posts";
+// import { useDispatch } from "react-redux";
 
 export const Post = ({
-  id,
+  _id,
   title,
   createdAt,
   imageUrl,
@@ -27,28 +26,29 @@ export const Post = ({
   isFullPost,
   isLoading,
   isEditable,
+  onClickRemove,
 }) => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   if (isLoading) {
     return <PostSkeleton />;
   }
 
-  const onClickRemove = () => {
-    if (window.confirm("Are you sure you want to delete article?")) {
-      dispatch(fetchRemovePost(id));
-    }
-  };
+  // const onClickRemove = () => {
+  //   if (window.confirm("Are you sure you want to delete article?")) {
+  //     dispatch(fetchRemovePost(id));
+  //   }
+  // };
 
   return (
     <div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
       {isEditable && (
         <div className={styles.editButtons}>
-          <Link to={`/posts/${id}/edit`}>
+          <Link to={`/posts/${_id}/edit`}>
             <IconButton color="primary">
               <EditIcon />
             </IconButton>
           </Link>
-          <IconButton onClick={onClickRemove} color="secondary">
+          <IconButton onClick={() => onClickRemove(_id)} color="secondary">
             <DeleteIcon />
           </IconButton>
         </div>
@@ -66,7 +66,7 @@ export const Post = ({
           <h2
             className={clsx(styles.title, { [styles.titleFull]: isFullPost })}
           >
-            {isFullPost ? title : <Link to={`/posts/${id}`}>{title}</Link>}
+            {isFullPost ? title : <Link to={`/posts/${_id}`}>{title}</Link>}
           </h2>
           <ul className={styles.tags}>
             {tags.map((name) => (

@@ -12,6 +12,7 @@ import {
   fetchTags,
   fetchSortByNewest,
   fetchSortByPopularity,
+  fetchRemovePost,
 } from "../redux/slices/posts";
 
 export const Home = () => {
@@ -24,10 +25,15 @@ export const Home = () => {
 
   const [filterState, setFilterState] = React.useState("new");
 
+  const [isDeliting, setIsDeleting] = React.useState(false);
+
   React.useEffect(() => {
-    dispatch(fetchPosts());
+    dispatch(fetchPosts()).then(() => {
+      dispatch(fetchSortByNewest());
+    });
     dispatch(fetchTags());
-  }, []); //back-end request to get articles
+    setIsDeleting(false);
+  }, [isDeliting]); //back-end request to get articles
 
   const onSortByNewest = () => {
     dispatch(fetchSortByNewest());
@@ -35,6 +41,12 @@ export const Home = () => {
 
   const onSortByPopularity = () => {
     dispatch(fetchSortByPopularity());
+  };
+
+  const onClickRemove = (_id) => {
+    if (window.confirm("Delete post?")) {
+      dispatch(fetchRemovePost(_id));
+    }
   };
 
   //can do faster sorting by usingEffect
@@ -68,7 +80,7 @@ export const Home = () => {
               <Post key={index} isLoading={true} />
             ) : (
               <Post
-                id={obj._id}
+                _id={obj._id}
                 title={obj.title}
                 imageUrl={
                   obj.imageUrl ? `http://localhost:4444${obj.imageUrl}` : ""
@@ -78,6 +90,7 @@ export const Home = () => {
                 commentsCount={3}
                 tags={obj.tags}
                 isEditable={userData?._id === obj.user._id}
+                onClickRemove={onClickRemove}
               />
             )
           )}

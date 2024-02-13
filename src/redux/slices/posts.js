@@ -12,8 +12,11 @@ export const fetchTags = createAsyncThunk("posts/fetchTags", async () => {
 });
 
 export const fetchRemovePost = createAsyncThunk(
-  "posts/fetchRemovePost",
-  async (id) => axios.delete(`/posts/${id}`)
+  "/posts/fetchRemovePost",
+  async (id) => {
+    const res = await axios.delete(`/posts/${id}`);
+    return res.data;
+  }
 );
 
 export const fetchSortByNewest = createAsyncThunk(
